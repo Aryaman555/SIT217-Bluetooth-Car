@@ -13,8 +13,6 @@ void setup()
   pinMode(m2, OUTPUT);
   pinMode(m3, OUTPUT);
   pinMode(m4, OUTPUT);
-  pinMode(m5,OUTPUT);
-  pinMode(m6,OUTPUT);
 
   Serial.begin(9600);
 }
