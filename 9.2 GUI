@@ -1,0 +1,98 @@
+import controlP5.*; //import ControlP5 library
+import processing.serial.*;
+
+Serial port;
+
+ControlP5 cp5; //create ControlP5 object
+PFont font;
+
+void setup(){ //same as arduino program
+
+  size(400, 550);    //window size, (width, height)
+  
+  printArray(Serial.list());   //prints all available serial ports
+  
+  port = new Serial(this, "COM9", 9600);  //You may need to change COMX, where X is the correct OUTGOING port for Arduino!
+  //lets add buton to empty window
+  
+  cp5 = new ControlP5(this);
+  font = createFont("calibri", 36);    // custom fonts for buttons and title
+  cp5.setFont(font);
+  
+  // create a toggle and change the default look to a (on/off) switch look
+  cp5.addButton("ForwardButton")
+     .setPosition(100,50)
+     .setSize(200, 50)
+     .setCaptionLabel("FORWARD")//sets the default state when turned on, also follow up with sending close commands to all valves (write a function!) 
+     ;
+  cp5.addButton("BackwardButton")
+     .setPosition(100,150)
+     .setSize(200,50)
+     .setCaptionLabel("BACKWARD")//sets the default state when turned on, also follow up with sending close commands to all valves (write a function!) 
+     ;
+  cp5.addButton("LeftButton")
+     .setPosition(100,250)
+     .setSize(200,50)
+     .setCaptionLabel("LEFT")//sets the default state when turned on, also follow up with sending close commands to all valves (write a function!) 
+     ;
+  cp5.addButton("RightButton")
+     .setPosition(100,350)
+     .setSize(200,50)
+     .setCaptionLabel("RIGHT")//sets the default state when turned on, also follow up with sending close commands to all valves (write a function!) 
+     ;
+  cp5.addButton("StopButton")
+     .setPosition(100,450)
+     .setSize(200,50)
+     .setCaptionLabel("STOP")//sets the default state when turned on, also follow up with sending close commands to all valves (write a function!) 
+     ;
+}
+
+//LED off initially, so set bool appropriately
+boolean isOpen=false;
+
+void draw(){  //same as loop in arduino
+
+  background(255,255,255); // background color of window (r, g, b) or (0 to 255)
+  fill(0, 0, 0);               //text color (r, g, b)
+  textFont(font);
+}
+
+//define functions that will send signal to Arduino
+void Forward(){
+  port.write('F');
+}
+void Backward(){
+  port.write('G');
+}
+void Left(){
+  port.write('L');
+}
+void Right(){
+  port.write('R');
+}
+void Stop(){
+  port.write('S');
+}
+//define the callback functions for the buttons in GUI
+//toggle1 is for button1 
+void ForwardButton()
+{
+  Forward();
+}
+void RightButton()
+{
+  Right();
+}
+void LeftButton()
+{
+  Left();
+}
+void StopButton()
+{
+  Stop();
+}
+
+void BackwardButton()
+{
+  Backward();
+}
